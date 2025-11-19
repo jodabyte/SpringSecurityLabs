@@ -1,0 +1,2 @@
+INSERT INTO users (username, password, enabled) VALUES ('r2d2', '{bcrypt}$2a$10$vIr.OPHQ6fW.gLnqdQLnweZ76PTghWRhadW9Q5qf7pfZuFSONRlUi', '1');
+INSERT INTO authorities (username, authority) VALUES ('r2d2', 'ALL');
