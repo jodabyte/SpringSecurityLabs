@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: authorization
+
+  datasource:
+    url: jdbc:h2:mem:authdb
+    username: sa
+    password:
+
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
