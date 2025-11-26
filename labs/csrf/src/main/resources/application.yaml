@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: csrf
+
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
