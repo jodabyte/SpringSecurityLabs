@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: cors
+
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE

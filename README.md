@@ -1,5 +1,14 @@
 # SpringSecurityLabs
 
+## cors (cross-origin resource sharing)
+
+Allow to specify what kind of cross-domain requests are authorized.
+
+Uses:
+
+- Global configuration to specify the allowed http methods (`POST`) and origins (`http://ping.de`).
+- `@CrossOrigin` to specify fine-grained controller and controller method level control.
+
 ## csrf (cross site request forgery)
 
 Protection against CSRF attacks.
