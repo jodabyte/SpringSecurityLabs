@@ -19,6 +19,21 @@ Uses:
 - Default CSRF setting that stores the expected CSRF token in a [HttpSession by using HttpSessionCsrfTokenRepository](https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html#csrf-token-repository-httpsession) and reads the actual token from a HTTP parameter `_csrf`
 - [Single-Page Applications setting](https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html#csrf-integration-javascript-spa) that stores the expected CSRF token in a [cookie](https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html#csrf-token-repository-cookie) named `XSRF-TOKEN` and reads the actual token from a HTTP request header `X-XSRF-TOKEN` or the request parameter `_csrf`
 
+## method-level-security
+
+Method based authorization using authorities and roles.
+
+Uses:
+
+- `InMemoryUserDetailsManager` and `NoOpPasswordEncoder` to create user for tests.
+- `@PreAuthorize` and ` @PostAuthorize` for method level access control.
+- [Expressing Authorization with SpEL](https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html#authorization-expressions): 
+  - Methods: `permitAll`, `denyAll`, `hasAuthority`, `hasRole`, `hasAnyAuthority`, `hasAnyRole`, `hasAllRoles`, `hasAllAuthorities` and `hasPermission`.
+  - Fields: `authentication` and `principal`.
+- Method parameters and return values, they can also be accessed in the SpEL expression.
+- `PermissionEvaluator` to create custom evaluation expressions.
+
+
 ## request-authorization
 
 Request based authorization using authorities and roles.

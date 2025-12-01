@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: methodsecurity
+
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
