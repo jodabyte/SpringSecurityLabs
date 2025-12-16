@@ -1,0 +1,14 @@
+app:
+  keycloak-image: quay.io/keycloak/keycloak:26.4.7
+  keycloak-realm-file: /keycloaktc-realm.json
+  keycloak-realm-name: keycloaktc
+
+spring:
+  application:
+    name: resource-server
+
+  logging:
+    level:
+      org:
+        springframework:
+          security: TRACE

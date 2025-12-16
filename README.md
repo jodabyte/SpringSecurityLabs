@@ -33,6 +33,34 @@ Uses:
 - Method parameters and return values, they can also be accessed in the SpEL expression.
 - `PermissionEvaluator` to create custom evaluation expressions.
 
+## oauth2
+
+### authorization-server
+
+Build an OAuth 2/OpenID Connect authorization server from scratch with spring security authorization server framework.
+
+Uses:
+
+- `JdbcUserDetailsManager` to manage user and authorities.
+- `DelegatingPasswordEncoder` to support multiple password encoding schemes.
+- `JdbcRegisteredClientRepository` to manage OAuth2 clients.
+- Enable Authorization Grant Types: `AUTHORIZATION_CODE`, `CLIENT_CREDENTIALS`.
+- Enable Proof Key for Code Exchange (`PKCE`).
+- `JWKSource` for signing access tokens using a `JWKSet` generated on startup.
+- Non-Opaque Tokens (JSON Web Tokens).
+- `MockMvc` support for spring security in integration tests.
+- `org.htmlunit.WebClient` for End-To-End tests.
+
+### resource-server
+
+Build a backend service with spring security resource server framework.
+
+Uses:
+
+- [Keycloak Module as Testcontainer](https://testcontainers.com/modules/keycloak/).
+- Built-in support in spring boot to manage testcontainers as spring beans.
+- `MockMvc` support for spring security in integration tests and end-to-end tests.
+- `TestResourceServerApplication` to create a [local environment with testcontainers](https://www.baeldung.com/spring-boot-built-in-testcontainers#testcontainers-support-for-local-development).
 
 ## request-authorization
 
@@ -57,5 +85,19 @@ Uses:
 - `JdbcUserDetailsManager` to manage user and authorities
 - `DelegatingPasswordEncoder` to support multiple password encoding schemes
 
+# Appendix
 
+## Deploy a keycloak and export the realm config
 
+1. [Get started with Keycloak on Docker](https://www.keycloak.org/getting-started/getting-started-docker#_start_keycloak)
+
+2. [Securing Spring Boot Microservice using Keycloak and Testcontainers](https://testcontainers.com/guides/securing-spring-boot-microservice-using-keycloak-and-testcontainers/)
+
+   - [Workaround to export a realm when `start-dev` parameter is used](https://github.com/keycloak/keycloak/issues/33800#issuecomment-2411056817)
+   - Add `--users realm_file` to include the users into the export
+
+    > docker exec -it my_keycloak sh -c \
+    >  "cp -rp /opt/keycloak/data/h2 /tmp ; \
+    >  /opt/keycloak/bin/kc.sh export --dir /opt/keycloak/data/import --users realm_file --realm MY_REALM \
+    >    --db dev-file \
+    >    --db-url 'jdbc:h2:file:/tmp/h2/keycloakdb;NON_KEYWORDS=VALUE'"
