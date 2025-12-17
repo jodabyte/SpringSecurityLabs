@@ -23,18 +23,22 @@ class ResourceServerIntegrationTests {
     private MockMvc sut;
 
     @Test
-    @DisplayName("Given no jwt token is provided with the request" +
-            "When accessing a protected resource" +
-            "Then return a 401.")
+    @DisplayName("""
+            Given a protected resource
+            When no jwt token is provided with the request
+            Then return a 401.
+            """)
     void testWitNoToken() throws Exception {
         this.sut.perform(get("/private"))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
-    @DisplayName("Given a valid jwt token is provided with the request" +
-            "When accessing a protected resource" +
-            "Then return a 200.")
+    @DisplayName("""
+            Given a protected resource
+            When a valid jwt token is provided with the request
+            Then return a 200.
+            """)
     void testWithValidToken() throws Exception {
         this.sut.perform(get("/private").with(jwt()))
                 .andExpect(status().isOk())

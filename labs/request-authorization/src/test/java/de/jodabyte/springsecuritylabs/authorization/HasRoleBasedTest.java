@@ -21,14 +21,22 @@ class HasRoleBasedTest {
     private MockMvc sut;
 
     @Test
-    @DisplayName("The endpoint cannot be called unauthenticated")
+    @DisplayName("""
+            Given a role protected endpoint
+            When no user is provided
+            Then no authentication object is created
+            """)
     void testFailedAuthentication() throws Exception {
         this.sut.perform(get("/roles/read"))
                 .andExpect(unauthenticated());
     }
 
     @Test
-    @DisplayName("User can access /roles/read but cannot access /roles/write")
+    @DisplayName("""
+            Given a the user c3po
+            When user can access /roles/read but cannot access /roles/write
+            Then respond with the correct HTTP codes.
+            """)
     @WithUserDetails("c3po")
     void testHasRoleToRead() throws Exception {
         this.sut.perform(get("/roles/read"))
@@ -41,7 +49,11 @@ class HasRoleBasedTest {
     }
 
     @Test
-    @DisplayName("A user can access /roles/read and /roles/write")
+    @DisplayName("""
+            Given a the user r2d2
+            When user can access /roles/read and /roles/write
+            Then respond with the correct HTTP codes.
+            """)
     @WithUserDetails("r2d2")
     void testHasRoleToWriteAndRead() throws Exception {
         this.sut.perform(get("/roles/read"))

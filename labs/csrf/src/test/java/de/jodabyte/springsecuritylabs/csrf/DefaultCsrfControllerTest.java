@@ -21,38 +21,66 @@ class DefaultCsrfControllerTest {
     private MockMvc sut;
 
     @Test
-    @DisplayName("Call endpoint /defaults/ping using GET")
+    @DisplayName("""
+            Given CSRF enabled /defaults/ping endpoint
+            When using GET method
+            Then respond with 200.
+            """)
     void testCanCallGetMethod() throws Exception {
-        this.sut.perform(get("/defaults/ping").with(withHttpBasic()))
+        this.sut.perform(get("/defaults/ping")
+                        .with(withHttpBasic()))
                 .andExpect(status().isOk());
 
     }
 
     @Test
-    @DisplayName("Call endpoint /defaults/ping using POST without providing the CSRF token")
+    @DisplayName("""
+            Given CSRF enabled /defaults/ping endpoint
+            When using POST method without CSRF token
+            Then respond with 403.
+            """)
     void testCanNotCallPostMethod() throws Exception {
-        this.sut.perform(post("/defaults/ping").with(withHttpBasic()))
+        this.sut.perform(post("/defaults/ping")
+                        .with(withHttpBasic()))
                 .andExpect(status().isForbidden());
     }
 
     @Test
-    @DisplayName("Call endpoint /defaults/ping using POST providing the CSRF token")
+    @DisplayName("""
+            Given CSRF enabled /defaults/ping endpoint
+            When using POST method with a valid CSRF token
+            Then respond with 200.
+            """)
     void testCanCallPostMethod() throws Exception {
-        this.sut.perform(post("/defaults/ping").with(withHttpBasic()).with(csrf()))
+        this.sut.perform(post("/defaults/ping")
+                        .with(withHttpBasic())
+                        .with(csrf()))
                 .andExpect(status().isOk());
     }
 
     @Test
-    @DisplayName("Call endpoint /defaults/ping using POST providing the CSRF token in header")
+    @DisplayName("""
+            Given CSRF enabled /defaults/ping endpoint
+            When using POST method with a valid CSRF token in the header
+            Then respond with 200.
+            """)
     void testCanCallPostMethodWithHeader() throws Exception {
-        this.sut.perform(post("/defaults/ping").with(withHttpBasic()).with(csrf().asHeader()))
+        this.sut.perform(post("/defaults/ping")
+                        .with(withHttpBasic())
+                        .with(csrf().asHeader()))
                 .andExpect(status().isOk());
     }
 
     @Test
-    @DisplayName("Call endpoint /defaults/ping using POST providing an invalid CSRF token")
+    @DisplayName("""
+            Given CSRF enabled /defaults/ping endpoint
+            When using POST method with an invalid CSRF token
+            Then respond with 403.
+            """)
     void testCallPostMethodWithInvalidToken() throws Exception {
-        this.sut.perform(post("/defaults/ping").with(withHttpBasic()).with(csrf().useInvalidToken()))
+        this.sut.perform(post("/defaults/ping")
+                        .with(withHttpBasic())
+                        .with(csrf().useInvalidToken()))
                 .andExpect(status().isForbidden());
     }
 }

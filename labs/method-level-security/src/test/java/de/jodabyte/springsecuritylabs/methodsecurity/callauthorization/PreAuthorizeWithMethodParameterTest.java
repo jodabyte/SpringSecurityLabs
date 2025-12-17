@@ -17,24 +17,33 @@ class PreAuthorizeWithMethodParameterTest {
     private AccessService sut;
 
     @Test
-    @DisplayName("When the method is called without a user," +
-            " it throws IllegalArgumentException")
+    @DisplayName("""
+            Given a authorization rule secures the access to the method and expects the username of the authenticated user as a parameter
+            When no user is authenticated
+            Then throw an IllegalArgumentException.
+            """)
     void testAccessWithNoUser() {
         assertThrows(IllegalArgumentException.class, () -> this.sut.canCallWithCorrectUsername("No User"));
     }
 
     @Test
+    @DisplayName("""
+            Given a authorization rule secures the access to the method and expects the username of the authenticated user as a parameter
+            When a different user is provided that is authenticated
+            Then throw an AuthorizationDeniedException.
+            """)
     @WithMockUser("green")
-    @DisplayName("When the method is called with a different username parameter than the authenticated user, " +
-            "it should throw AuthorizationDeniedException.")
     void testAccessWithWrongAuthority() {
         assertThrows(AuthorizationDeniedException.class, () -> this.sut.canCallWithCorrectUsername("blue"));
     }
 
     @Test
+    @DisplayName("""
+            Given a authorization rule secures the access to the method and expects the username of the authenticated user as a parameter
+            When the same user is provided that is authenticated
+            Then method returns the expected result.
+            """)
     @WithMockUser("green")
-    @DisplayName("When the method is called for the authenticated user, " +
-            "it should return the expected result.")
     void testAccessWithRightAuthority() {
         assertEquals(AccessService.ACCESS_GRANTED, this.sut.canCallWithCorrectUsername("green"));
     }

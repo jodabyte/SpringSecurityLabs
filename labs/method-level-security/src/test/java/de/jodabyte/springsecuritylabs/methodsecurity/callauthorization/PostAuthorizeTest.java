@@ -19,9 +19,11 @@ class PostAuthorizeTest {
     private AccessService sut;
 
     @Test
-    @DisplayName("When the method is called with a user " +
-            "but the returned object doesn't meet the authorization rules, " +
-            "it should throw AuthorizationDeniedException")
+    @DisplayName("""
+            Given the return object of a method is protected by a authorization rule
+            When user role does not match the rules
+            Then throw an AuthorizationDeniedException.
+            """)
     @WithMockUser(username = "blue")
     void testSearchingProtectedUser() {
         assertThrows(AuthorizationDeniedException.class,
@@ -29,8 +31,11 @@ class PostAuthorizeTest {
     }
 
     @Test
-    @DisplayName("When the method is called for a reader that doesn't have the reader role, " +
-            "it should successfully return.")
+    @DisplayName("""
+            Given the return object of a method is protected by a authorization rule
+            When user role does match the rules
+            Then return the object.
+            """)
     @WithMockUser(username = "green")
     void testSearchingUnprotectedUser() {
         var result = this.sut.canReceiveMethodResultWithCorrectRole("blue");

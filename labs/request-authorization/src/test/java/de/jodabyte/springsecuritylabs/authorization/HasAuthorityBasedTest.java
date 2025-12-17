@@ -21,14 +21,22 @@ class HasAuthorityBasedTest {
     private MockMvc sut;
 
     @Test
-    @DisplayName("The endpoint cannot be called unauthenticated")
+    @DisplayName("""
+            Given a authority protected endpoint
+            When no user is provided
+            Then no authentication object is created
+            """)
     void testFailedAuthentication() throws Exception {
         this.sut.perform(get("/authorities/read"))
                 .andExpect(unauthenticated());
     }
 
     @Test
-    @DisplayName("User cannot access /authorities/read but can access /authorities/write")
+    @DisplayName("""
+            Given a the user c3po
+            When user cannot access /authorities/read but can access /authorities/write
+            Then respond with the correct HTTP codes.
+            """)
     @WithUserDetails("c3po")
     void testHasAuthorityWriteButNotRead() throws Exception {
         this.sut.perform(get("/authorities/read"))
@@ -41,7 +49,11 @@ class HasAuthorityBasedTest {
     }
 
     @Test
-    @DisplayName("A user can access /authorities/read and /authorities/write")
+    @DisplayName("""
+            Given a the user r2d2
+            When user can access /authorities/read and /authorities/write
+            Then respond with the correct HTTP codes.
+            """)
     @WithUserDetails("r2d2")
     void testHasAuthorityWriteAndRead() throws Exception {
         this.sut.perform(get("/authorities/read"))
@@ -54,7 +66,11 @@ class HasAuthorityBasedTest {
     }
 
     @Test
-    @DisplayName("A user can access /authorities/delete with the necessary authority")
+    @DisplayName("""
+            Given a the user c3po
+            When user can access /authorities/delete
+            Then respond with 200.
+            """)
     @WithUserDetails("c3po")
     void testExpressionBasedAuthority() throws Exception {
         this.sut.perform(get("/authorities/delete"))
@@ -63,7 +79,11 @@ class HasAuthorityBasedTest {
     }
 
     @Test
-    @DisplayName("A user cannot access /authorities/delete if user has an authority that is not allowed")
+    @DisplayName("""
+            Given a the user r2d2
+            When user cannot access /authorities/delete if user has an authority that is not allowed
+            Then respond with 403.
+            """)
     @WithUserDetails("r2d2")
     void testFailExpressionBasedAuthority() throws Exception {
         this.sut.perform(get("/authorities/delete"))

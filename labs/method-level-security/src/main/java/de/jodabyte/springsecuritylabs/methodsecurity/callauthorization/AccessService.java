@@ -12,7 +12,7 @@ public class AccessService {
 
     public final static String ACCESS_GRANTED = "Access granted";
     private final DocumentRepository repository;
-    private Map<String, Employee> records =
+    private final Map<String, Employee> records =
             Map.of("blue",
                     new Employee("Blue",
                             List.of("Karamazov Brothers"),

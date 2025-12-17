@@ -18,24 +18,33 @@ class PreAuthorizeTest {
     private AccessService sut;
 
     @Test
-    @DisplayName("When the method is called without an authenticated user, " +
-            "it throws AuthenticationException")
+    @DisplayName("""
+            Given a authorization rule secures the access to the method
+            When no user is authenticated
+            Then throw an AuthenticationException.
+            """)
     void testAccessWithNoUser() {
         assertThrows(AuthenticationException.class, () -> this.sut.canCallWithWriteAuthority());
     }
 
     @Test
+    @DisplayName("""
+            Given a authorization rule secures the access to the method
+            When the user does not have the necessary authority
+            Then throw an AuthorizationDeniedException.
+            """)
     @WithMockUser(authorities = "read")
-    @DisplayName("When the method is called with an authenticated user having a wrong authority, " +
-            "it throws AuthorizationDeniedException")
     void testAccessWithWrongAuthority() {
         assertThrows(AuthorizationDeniedException.class, () -> this.sut.canCallWithWriteAuthority());
     }
 
     @Test
+    @DisplayName("""
+            Given a authorization rule secures the access to the method
+            When the user does have the necessary authority
+            Then method returns the expected result.
+            """)
     @WithMockUser(authorities = "write")
-    @DisplayName("When the method is called with an authenticated user having a correct authority, " +
-            "it returns the expected result")
     void testAccessWithRightAuthority() {
         assertEquals(AccessService.ACCESS_GRANTED, this.sut.canCallWithWriteAuthority());
     }

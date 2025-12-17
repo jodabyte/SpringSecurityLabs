@@ -18,8 +18,12 @@ class CrossOriginAnnotationControllerTest {
     private MockMvc sut;
 
     @Test
-    @DisplayName("Test no CORS configuration for /annotation/ping endpoint")
-    public void testNoCORSForPingEndpoint() throws Exception {
+    @DisplayName("""
+            Given CORS unprotected /annotation/ping endpoint
+            When using an arbitrary origin
+            Then respond with 200.
+            """)
+    public void testNoCORS() throws Exception {
         sut.perform(options("/annotation/ping")
                         .header("Access-Control-Request-Method", "POST")
                         .header("Origin", "http://pong.de")
@@ -30,8 +34,12 @@ class CrossOriginAnnotationControllerTest {
     }
 
     @Test
-    @DisplayName("Test invalid origin for /annotation/pong endpoint")
-    public void testInvalidOriginForPongEndpoint() throws Exception {
+    @DisplayName("""
+            Given CORS protected /annotation/pong endpoint
+            When using not allowed origin
+            Then respond with 403.
+            """)
+    public void testInvalidOrigin() throws Exception {
         sut.perform(options("/annotation/pong")
                         .header("Access-Control-Request-Method", "POST")
                         .header("Origin", "http://pong.com")
@@ -43,8 +51,12 @@ class CrossOriginAnnotationControllerTest {
     }
 
     @Test
-    @DisplayName("Test CORS configuration for /annotation/pong endpoint")
-    public void testCORSForPongEndpoint() throws Exception {
+    @DisplayName("""
+            Given CORS protected /annotation/pong endpoint
+            When using an allowed origin
+            Then respond with 200.
+            """)
+    public void testValidCORS() throws Exception {
         sut.perform(options("/annotation/pong")
                         .header("Access-Control-Request-Method", "POST")
                         .header("Origin", "http://pong.de")

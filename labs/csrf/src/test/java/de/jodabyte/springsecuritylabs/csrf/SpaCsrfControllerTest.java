@@ -25,24 +25,40 @@ class SpaCsrfControllerTest {
     private MockMvc sut;
 
     @Test
-    @DisplayName("Call endpoint /spa/ping using GET")
+    @DisplayName("""
+            Given CSRF enabled /spa/ping endpoint
+            When using GET method
+            Then respond with 200.
+            """)
     void testCanCallGetMethod() throws Exception {
-        this.sut.perform(get("/spa/ping").with(withHttpBasic()))
+        this.sut.perform(get("/spa/ping")
+                        .with(withHttpBasic()))
                 .andExpect(status().isOk());
 
     }
 
     @Test
-    @DisplayName("Call endpoint /spa/ping using POST and without providing the CSRF token")
+    @DisplayName("""
+            Given CSRF enabled /spa/ping endpoint
+            When using POST method and without providing the CSRF token
+            Then respond with 403.
+            """)
     void testCannotCallPostMethodWithoutToken() throws Exception {
-        this.sut.perform(post("/spa/ping").with(withHttpBasic()))
+        this.sut.perform(post("/spa/ping")
+                        .with(withHttpBasic()))
                 .andExpect(status().isForbidden());
     }
 
     @Test
-    @DisplayName("Call endpoint /spa/ping using POST and the CSRF token")
+    @DisplayName("""
+            Given CSRF enabled /spa/ping endpoint
+            When using POST method and a valid CSRF token
+            Then respond with 200.
+            """)
     void testCanCallPostMethodWithToken() throws Exception {
-        this.sut.perform(post("/spa/ping").with(withHttpBasic()).with(csrf()))
+        this.sut.perform(post("/spa/ping")
+                        .with(withHttpBasic())
+                        .with(csrf()))
                 .andExpect(status().isOk());
     }
 
@@ -52,10 +68,15 @@ class SpaCsrfControllerTest {
      * cookie with the token.
      */
     @Test
-    @DisplayName("Call endpoint /spa/ping using POST and provide the CSRF token in header")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
+    @DisplayName("""
+            Given CSRF enabled /spa/ping endpoint
+            When using POST method and a valid CSRF token in header
+            Then respond with 200.
+            """)
     void testCanCallPostMethodWithHeader() throws Exception {
-        Cookie cookie = this.sut.perform(get("/spa/ping").with(withHttpBasic()))
+        Cookie cookie = this.sut.perform(get("/spa/ping")
+                        .with(withHttpBasic()))
                 .andReturn().getResponse().getCookie("XSRF-TOKEN");
 
         this.sut.perform(post("/spa/ping")
@@ -66,9 +87,15 @@ class SpaCsrfControllerTest {
     }
 
     @Test
-    @DisplayName("Call endpoint /spa/ping using POST and provide an invalid CSRF token")
+    @DisplayName("""
+            Given CSRF enabled /spa/ping endpoint
+            When using POST method and a invalid CSRF token
+            Then respond with 403.
+            """)
     void testCallPostMethodWithInvalidToken() throws Exception {
-        this.sut.perform(post("/spa/ping").with(withHttpBasic()).with(csrf().useInvalidToken()))
+        this.sut.perform(post("/spa/ping")
+                        .with(withHttpBasic())
+                        .with(csrf().useInvalidToken()))
                 .andExpect(status().isForbidden());
     }
 

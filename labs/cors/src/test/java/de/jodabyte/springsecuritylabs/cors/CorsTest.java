@@ -12,14 +12,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class CorsControllerTest {
+class CorsTest {
 
     @Autowired
     private MockMvc sut;
-    
+
     @Test
-    @DisplayName("Test invalid http method for /cors/ping endpoint")
-    public void testInvalidMethodForPingEndpoint() throws Exception {
+    @DisplayName("""
+            Given CORS protected /cors/ping endpoint
+            When using the not allowed GET method and an allowed origin
+            Then respond with 403.
+            """)
+    public void testInvalidMethod() throws Exception {
         sut.perform(options("/cors/ping")
                         .header("Access-Control-Request-Method", "GET")
                         .header("Origin", "http://ping.de")
@@ -31,8 +35,12 @@ class CorsControllerTest {
     }
 
     @Test
-    @DisplayName("Test invalid origin for /cors/ping endpoint")
-    public void testInvalidOriginForPingEndpoint() throws Exception {
+    @DisplayName("""
+            Given CORS protected /cors/ping endpoint
+            When using an allowed POST method and a not allowed origin
+            Then respond with 403.
+            """)
+    public void testInvalidOrigin() throws Exception {
         sut.perform(options("/cors/ping")
                         .header("Access-Control-Request-Method", "POST")
                         .header("Origin", "http://ping.com")
@@ -44,8 +52,12 @@ class CorsControllerTest {
     }
 
     @Test
-    @DisplayName("Test CORS configuration for /cors/ping endpoint")
-    public void testCORSForPingEndpoint() throws Exception {
+    @DisplayName("""
+            Given CORS protected /cors/ping endpoint
+            When using an allowed POST method and an allowed origin
+            Then respond with 200.
+            """)
+    public void testValidCORS() throws Exception {
         sut.perform(options("/cors/ping")
                         .header("Access-Control-Request-Method", "POST")
                         .header("Origin", "http://ping.de")

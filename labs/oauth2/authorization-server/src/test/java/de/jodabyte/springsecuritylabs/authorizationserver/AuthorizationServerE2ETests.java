@@ -64,18 +64,6 @@ class AuthorizationServerE2ETests {
         return signInButton.click();
     }
 
-    private void assertLoginPage(HtmlPage page) {
-        assertThat(page.getUrl().toString()).endsWith("/login");
-
-        HtmlInput usernameInput = page.querySelector("input[name=\"username\"]");
-        HtmlInput passwordInput = page.querySelector("input[name=\"password\"]");
-        HtmlButton signInButton = page.querySelector("button");
-
-        assertThat(usernameInput).isNotNull();
-        assertThat(passwordInput).isNotNull();
-        assertThat(signInButton.getTextContent()).isEqualTo("Sign in");
-    }
-
     private void assertAuthorizationCodeExists(WebResponse response) {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.MOVED_PERMANENTLY.value());
         String location = response.getResponseHeaderValue("location");
@@ -98,9 +86,11 @@ class AuthorizationServerE2ETests {
     }
 
     @Test
-    @DisplayName("Given valid credentials" +
-            "When requesting access to a protected resource using authorization code flow" +
-            "Then respond with the protected resource.")
+    @DisplayName("""
+            Given valid credentials
+            When requesting access to a protected resource using authorization code flow
+            Then respond with the protected resource.
+            """)
     void testGrandTypeAuthorizationCode() throws Exception {
         // Log in
         this.webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
@@ -122,9 +112,11 @@ class AuthorizationServerE2ETests {
     }
 
     @Test
-    @DisplayName("Given valid credentials" +
-            "When requesting access to a protected resource using client credentials flow" +
-            "Then respond with the protected resource.")
+    @DisplayName("""
+            Given valid credentials
+            When requesting access to a protected resource using client credentials flow
+            Then respond with the protected resource.
+            """)
     void testGrandTypeClientCredentials() throws Exception {
         String requestBody = "grant_type=client_credentials&scope=openid";
 

@@ -16,8 +16,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain defaultHttpSessionSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.httpBasic(Customizer.withDefaults())
-                .securityMatcher("/defaults/**")
+        http.securityMatcher("/defaults/**")
+                .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(c -> c.anyRequest().authenticated());
 
         return http.build();
@@ -25,8 +25,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain singlePageApplicationsSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.httpBasic(Customizer.withDefaults())
-                .securityMatcher("/spa/**")
+        http.securityMatcher("/spa/**")
+                .httpBasic(Customizer.withDefaults())
                 .csrf(CsrfConfigurer::spa)
                 .authorizeHttpRequests(c -> c.anyRequest().authenticated());
 

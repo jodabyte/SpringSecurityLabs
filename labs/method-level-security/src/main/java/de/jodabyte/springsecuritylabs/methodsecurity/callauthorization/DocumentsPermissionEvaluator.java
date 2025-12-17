@@ -9,6 +9,7 @@ import java.util.Objects;
 
 @Component
 public class DocumentsPermissionEvaluator implements PermissionEvaluator {
+    
     @Override
     public boolean hasPermission(Authentication authentication, Object target, Object permission) {
         Document document = (Document) target;

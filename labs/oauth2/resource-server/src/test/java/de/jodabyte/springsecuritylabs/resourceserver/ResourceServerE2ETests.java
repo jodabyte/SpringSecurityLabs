@@ -24,9 +24,11 @@ class ResourceServerE2ETests {
     private RestTestClient client;
 
     @Test
-    @DisplayName("Given no jwt token is provided with the request" +
-            "When accessing a protected resource" +
-            "Then return a 401.")
+    @DisplayName("""
+            Given a protected resource
+            When no jwt token is provided with the request
+            Then return a 401.
+            """)
     void testWitNoToken() throws Exception {
         this.client.get()
                 .uri("/private")
@@ -36,9 +38,11 @@ class ResourceServerE2ETests {
     }
 
     @Test
-    @DisplayName("Given a valid jwt token is provided with the request" +
-            "When accessing a protected resource" +
-            "Then return a 200.")
+    @DisplayName("""
+            Given a protected resource
+            When a valid jwt token is provided with the request
+            Then return a 200.
+            """)
     void testWithValidToken(@Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}") String issuerUri) throws Exception {
         String requestBody = "grant_type=client_credentials&client_id=web-client&client_secret=QAIRF2NmoY6jK7YYrae5kf50r7nqZfUK";
         RestClient tokenClient = RestClient.builder().baseUrl(issuerUri).build();
